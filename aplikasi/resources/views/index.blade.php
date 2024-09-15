@@ -20,14 +20,15 @@
     <link rel="stylesheet" href="{{ asset('/public/Asset/css/vertical-layout-light/style.css') }}">
     <!-- endinject -->
     <link rel="shortcut icon" href="{{ asset('/public/Asset/images/favicon.png') }}" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="{{ url('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css') }}" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <script src="{{ url('https://code.jquery.com/jquery-3.6.0.min.js') }}"></script>
+    <script src="{{ url('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js') }}" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </head>
 
 <body>
     @include('Halaman_depan.navbar')
-    @include('Halaman_depan.theme_setting')
     @include('Halaman_depan.sidebar')
     @yield('content')
 

@@ -1,47 +1,36 @@
-{{-- <style>
-    .container {
-        width: 100%;
-        padding: 15px;
-        /* Pastikan padding cukup */
-    }
-
-    #map {
-        height: 100vh;
-        /* Atur tinggi peta sesuai dengan kontainer */
-        width: 100%;
-        overflow: hidden;
-        /* Hindari overflow */
-    }
-</style> --}}
-
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-
-<!-- Bootstrap JS (optional) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
 <div class="container">
     <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
                     <p class="card-title">MAPS Lokasi Pengguna</p>
-                    <p class="font-weight-500">Lokasi Anda saat ini diperbarui menggunakan data sensor GPS. Peta di bawah akan terus menampilkan posisi terbaru Anda sesuai dengan data yang diterima dari sensor. Pastikan sensor GPS Anda aktif untuk mendapatkan hasil yang akurat.</p>
+                    <p class="font-weight-500">Lokasi Anda saat ini diperbarui menggunakan data sensor GPS. Peta di bawah
+                        akan terus menampilkan posisi terbaru Anda sesuai dengan data yang diterima dari sensor.
+                        Pastikan sensor GPS Anda aktif untuk mendapatkan hasil yang akurat.</p>
                     {{-- <div id="map" class="border"></div> --}}
                     <div id="map" style="height: 500px; width: 100%; position: relative;"></div>
-                    <p id="location-info">Menunggu data GPS...</p>
+                    <p id="location-info" class="mt-1">Menunggu data GPS...</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-
 <script>
+    function toDMS(deg, isLat) {
+        const absolute = Math.abs(deg);
+        const degrees = Math.floor(absolute);
+        const minutesNotTruncated = (absolute - degrees) * 60;
+        const minutes = Math.floor(minutesNotTruncated);
+        const seconds = Math.floor((minutesNotTruncated - minutes) * 60);
+
+        const direction = deg >= 0 ?
+            (isLat ? 'N' : 'E') :
+            (isLat ? 'S' : 'W');
+
+        return `${degrees}°${minutes}'${seconds}" ${direction}`;
+    }
+
     // Inisialisasi peta
     var map = L.map('map').setView([0, 0], 2);
 
@@ -51,15 +40,18 @@
     }).addTo(map);
 
 
-    $(document).ready(function () {
+    $(document).ready(function() {
         $.ajax({
             type: "GET",
             url: "https://haditech-4016a-default-rtdb.asia-southeast1.firebasedatabase.app/sensor.json",
             dataType: "JSON",
             success: function(response) {
                 if (response && response.lat && response.lng) {
-                    var lat = response.lat;
-                    var lng = response.lng;
+                    let lat = response.lat;
+                    let lng = response.lng;
+
+                    let latDMS = toDMS(lat, true);
+                    let lngDMS = toDMS(lng, false);
 
                     // Update lokasi peta dan tambahkan marker
                     map.setView([lat, lng], 13);
@@ -69,7 +61,7 @@
                         .openPopup();
 
                     // Update teks lokasi di atas peta
-                    $('#location-info').text(`Lokasi saat ini: Lat ${lat}, Lng ${lng}`);
+                    $('#location-info').text(`Lokasi saat ini: ${latDMS} ${lngDMS}`);
                 } else {
                     $('#location-info').text('Data GPS tidak ditemukan.');
                 }
@@ -79,7 +71,4 @@
             }
         });
     });
-        
-
 </script>
-

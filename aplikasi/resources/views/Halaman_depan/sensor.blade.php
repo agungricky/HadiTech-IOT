@@ -10,7 +10,6 @@
                 </div>
             </div>
         </div>
-        
 
         {{-- <div class="col-md-6 mb-4 stretch-card transparent">
             <div class="card card-dark-blue">
@@ -63,7 +62,7 @@
                         $('#kondisi').text('Kondisi saat ini Sangat Baik');
                     } else {
                         $('#sensor-getar').text('Kurang Baik');
-                        $('#kondisi').text('Kondisi dalam Kurang Baik');
+                        $('#kondisi').text('Kondisi Kurang Baik');
                     }
 
                     if ((lat == 0) && (lng == 0)) {
